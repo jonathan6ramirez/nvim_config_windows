@@ -1,3 +1,4 @@
+-- print 'floaterminal loaded'
 -- This saves our state
 local state = {
   floating = {
