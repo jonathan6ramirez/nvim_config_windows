@@ -153,7 +153,7 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -239,6 +239,9 @@ keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- save the file using ctrl+s
 keymap.set('n', '<C-s>', '<cmd>w<CR>', { desc = 'Save file' })
+
+-- Toggle zen mode
+keymap.set('n', '<leader>zm', '<cmd>ZenMode<CR>', { desc = 'Toggle Zen Mode' })
 
 -- INFO: Use the commands in the next lines in the terminal if they don't work automatically.
 
