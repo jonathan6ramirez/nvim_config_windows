@@ -246,13 +246,60 @@ keymap.set('n', '<leader>zm', '<cmd>ZenMode<CR>', { desc = 'Toggle Zen Mode' })
 -- INFO: Use the commands in the next lines in the terminal if they don't work automatically.
 
 -- Automatically map network drive to Z:
-vim.fn.system 'silent net use Z: \\\\fannin\\c$\\'
-vim.fn.system 'silent net use X: \\\\comal\\c$\\'
+-- vim.fn.system 'silent net use Z: \\\\fannin\\c$\\'
+-- vim.fn.system 'silent net use X: \\\\comal\\c$\\'
 
 -- INFO: To reveal the files in the network share use:
 --:Neotree filesystem reveal dir=Z:\
 --:Neotree filesystem reveal dir=X:\
 -- so on..
+vim.api.nvim_create_user_command('Eweb', function()
+  vim.cmd 'Neotree reveal dir=E:\\'
+end, {})
+vim.api.nvim_create_user_command('Comal', function()
+  vim.cmd 'Neotree reveal dir=X:\\'
+end, {})
+vim.api.nvim_create_user_command('Jzntc', function()
+  vim.cmd 'Neotree reveal dir=Y:\\'
+end, {})
+vim.api.nvim_create_user_command('Fannin', function()
+  vim.cmd 'Neotree reveal dir=Z:\\'
+end, {})
+vim.api.nvim_create_user_command('FanninCS', function()
+  vim.cmd 'Neotree reveal dir=\\\\fannin\\Computer Services\\'
+end, {})
+
+-- Removing any old stale files that are pointing to the same file in neovim
+-- from temp shada files
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    -- vim.notify 'Running removal of shada temp files'
+    local shada_dir = vim.fn.stdpath 'data' .. '\\shada'
+    local pattern = shada_dir .. '\\main.shada.tmp.*'
+
+    -- vim.notify('this is the shada dir: ' .. shada_dir .. '\n', vim.log.levels.ERROR)
+    vim.notify('this is the pattern: ' .. pattern .. '\n', vim.log.levels.ERROR)
+    local ok, err = pcall(function()
+      -- vim.notify 'inside the first pcall function'
+      -- check if any matching files exist
+      local files = vim.fn.glob(pattern, true, true)
+      vim.notify('inside the first pcall function' .. files .. '\n', vim.log.levels.DEBUG)
+      if #files > 0 then
+        for _, file in ipairs(files) do
+          -- Try deleting each file individually
+          local del_ok, del_err = pcall(vim.fn.delete, file)
+          if not del_ok then
+            vim.notify('Failed to delete temp file: ' .. file .. '\nError: ' .. del_err, vim.log.levels.WARM)
+          end
+        end
+      end
+    end)
+
+    if not ok then
+      vim.notify('Error cleaning up Shada temp files: ' .. err, vim.log.levels.ERROR)
+    end
+  end,
+})
 
 -- Set custom background color for Fidget.nvim
 vim.api.nvim_set_hl(0, 'Title', { bg = '#1e1e2e', fg = '#fab387' }) -- Adjust colors as needed
@@ -1075,52 +1122,105 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'craftzdog/solarized-osaka.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    lazy = false,
+  -- {
+  --   'rose-pine/neovim',
+  --   name = 'rose-pine',
+  --   config = function()
+  --     require('rose-pine').setup {
+  --       variant = 'main',
+  --       enable = {
+  --         terminal = true,
+  --       },
+  --       styles = {
+  --         bold = true,
+  --         italic = true,
+  --         transparency = true,
+  --       },
+  --     }
+  --     vim.cmd 'colorscheme rose-pine'
+  --   end,
+  -- },
+  --
+  {
+    'rebelot/kanagawa.nvim',
+    name = 'kanagawa',
     config = function()
-      require('solarized-osaka').setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        transparent = true, -- Enable this to disable setting the background color
-        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
-        styles = {
-          -- Style to be applied to different syntax groups
-          -- Value is any valid attr-list value for `:help nvim_set_hl`
-          comments = { italic = true },
-          keywords = { italic = true },
-          functions = {},
-          variables = {},
-          -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = 'transparent', -- style for sidebars, see below
-          floats = 'dark', -- style for floating windows
+      require('kanagawa').setup {
+        compile = false, -- enable compiling the colorscheme
+        undercurl = true, -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = true, -- do not set background color
+        dimInactive = false, -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true, -- define vim.g.terminal_color_{0,17}
+        colors = { -- add/modify theme and palette colors
+          palette = {},
+          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
         },
-        sidebars = { 'qf', 'help' }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
-        day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-        hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
-        dim_inactive = false, -- dims inactive windows
-        lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
-
-        --- You can override specific color groups to use other groups or a hex color
-        --- function will be called with a ColorScheme table
-        ---@param colors ColorScheme
-        on_colors = function(colors) end,
-
-        --- You can override specific highlights to use other groups or a hex color
-        --- function will be called with a Highlights and ColorScheme table
-        ---@param highlights Highlights
-        ---@param colors ColorScheme
-        on_highlights = function(highlights, colors) end,
+        overrides = function(colors) -- add/modify highlights
+          return {}
+        end,
+        theme = 'dragon', -- Load "wave" theme
+        background = { -- map the value of 'background' option to a theme
+          dark = 'wave', -- try "dragon" !
+          light = 'lotus',
+        },
       }
 
-      vim.cmd.colorscheme 'solarized-osaka'
+      -- setup must be called before loading
+      vim.cmd 'colorscheme kanagawa'
     end,
   },
+
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'craftzdog/solarized-osaka.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   lazy = false,
+  --   config = function()
+  --     require('solarized-osaka').setup {
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       transparent = true, -- Enable this to disable setting the background color
+  --       terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+  --       styles = {
+  --         -- Style to be applied to different syntax groups
+  --         -- Value is any valid attr-list value for `:help nvim_set_hl`
+  --         comments = { italic = true },
+  --         keywords = { italic = true },
+  --         functions = {},
+  --         variables = {},
+  --         -- Background styles. Can be "dark", "transparent" or "normal"
+  --         sidebars = 'transparent', -- style for sidebars, see below
+  --         floats = 'dark', -- style for floating windows
+  --       },
+  --       sidebars = { 'qf', 'help' }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+  --       day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+  --       hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+  --       dim_inactive = false, -- dims inactive windows
+  --       lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+  --
+  --       --- You can override specific color groups to use other groups or a hex color
+  --       --- function will be called with a ColorScheme table
+  --       ---@param colors ColorScheme
+  --       on_colors = function(colors) end,
+  --
+  --       --- You can override specific highlights to use other groups or a hex color
+  --       --- function will be called with a Highlights and ColorScheme table
+  --       ---@param highlights Highlights
+  --       ---@param colors ColorScheme
+  --       on_highlights = function(highlights, colors) end,
+  --     }
+  --
+  --     vim.cmd.colorscheme 'solarized-osaka'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   {
