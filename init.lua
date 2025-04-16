@@ -271,35 +271,35 @@ end, {})
 
 -- Removing any old stale files that are pointing to the same file in neovim
 -- from temp shada files
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    -- vim.notify 'Running removal of shada temp files'
-    local shada_dir = vim.fn.stdpath 'data' .. '\\shada'
-    local pattern = shada_dir .. '\\main.shada.tmp.*'
-
-    -- vim.notify('this is the shada dir: ' .. shada_dir .. '\n', vim.log.levels.ERROR)
-    vim.notify('this is the pattern: ' .. pattern .. '\n', vim.log.levels.ERROR)
-    local ok, err = pcall(function()
-      -- vim.notify 'inside the first pcall function'
-      -- check if any matching files exist
-      local files = vim.fn.glob(pattern, true, true)
-      vim.notify('inside the first pcall function' .. files .. '\n', vim.log.levels.DEBUG)
-      if #files > 0 then
-        for _, file in ipairs(files) do
-          -- Try deleting each file individually
-          local del_ok, del_err = pcall(vim.fn.delete, file)
-          if not del_ok then
-            vim.notify('Failed to delete temp file: ' .. file .. '\nError: ' .. del_err, vim.log.levels.WARM)
-          end
-        end
-      end
-    end)
-
-    if not ok then
-      vim.notify('Error cleaning up Shada temp files: ' .. err, vim.log.levels.ERROR)
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd('VimEnter', {
+--   callback = function()
+--     -- vim.notify 'Running removal of shada temp files'
+--     local shada_dir = vim.fn.stdpath 'data' .. '\\shada'
+--     local pattern = shada_dir .. '\\main.shada.tmp.*'
+--
+--     -- vim.notify('this is the shada dir: ' .. shada_dir .. '\n', vim.log.levels.ERROR)
+--     vim.notify('this is the pattern: ' .. pattern .. '\n', vim.log.levels.ERROR)
+--     local ok, err = pcall(function()
+--       -- vim.notify 'inside the first pcall function'
+--       -- check if any matching files exist
+--       local files = vim.fn.glob(pattern, true, true)
+--       vim.notify('inside the first pcall function' .. files .. '\n', vim.log.levels.DEBUG)
+--       if #files > 0 then
+--         for _, file in ipairs(files) do
+--           -- Try deleting each file individually
+--           local del_ok, del_err = pcall(vim.fn.delete, file)
+--           if not del_ok then
+--             vim.notify('Failed to delete temp file: ' .. file .. '\nError: ' .. del_err, vim.log.levels.WARM)
+--           end
+--         end
+--       end
+--     end)
+--
+--     if not ok then
+--       vim.notify('Error cleaning up Shada temp files: ' .. err, vim.log.levels.ERROR)
+--     end
+--   end,
+-- })
 
 -- Set custom background color for Fidget.nvim
 vim.api.nvim_set_hl(0, 'Title', { bg = '#1e1e2e', fg = '#fab387' }) -- Adjust colors as needed
@@ -1153,7 +1153,7 @@ require('lazy').setup({
         keywordStyle = { italic = true },
         statementStyle = { bold = true },
         typeStyle = {},
-        transparent = true, -- do not set background color
+        transparent = false, -- do not set background color
         dimInactive = false, -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
         colors = { -- add/modify theme and palette colors
@@ -1165,7 +1165,7 @@ require('lazy').setup({
         end,
         theme = 'dragon', -- Load "wave" theme
         background = { -- map the value of 'background' option to a theme
-          dark = 'wave', -- try "dragon" !
+          dark = 'dragon', -- try "dragon" !
           light = 'lotus',
         },
       }
