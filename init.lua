@@ -266,7 +266,10 @@ vim.api.nvim_create_user_command('Fannin', function()
   vim.cmd 'Neotree reveal dir=Z:\\'
 end, {})
 vim.api.nvim_create_user_command('FanninCS', function()
-  vim.cmd 'Neotree reveal dir=\\\\fannin\\Computer Services\\'
+  vim.cmd 'Neotree reveal dir=W:\\'
+end, {})
+vim.api.nvim_create_user_command('HubspotFolder', function()
+  vim.cmd 'Neotree reveal dir=H:\\'
 end, {})
 
 -- Removing any old stale files that are pointing to the same file in neovim
@@ -1061,9 +1064,11 @@ require('lazy').setup({
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
+          -- ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-j>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          -- ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-k>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -1153,7 +1158,7 @@ require('lazy').setup({
         keywordStyle = { italic = true },
         statementStyle = { bold = true },
         typeStyle = {},
-        transparent = false, -- do not set background color
+        transparent = true, -- do not set background color
         dimInactive = false, -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
         colors = { -- add/modify theme and palette colors
@@ -1163,9 +1168,9 @@ require('lazy').setup({
         overrides = function(colors) -- add/modify highlights
           return {}
         end,
-        theme = 'dragon', -- Load "wave" theme
+        theme = 'wave', -- Load "wave" theme
         background = { -- map the value of 'background' option to a theme
-          dark = 'dragon', -- try "dragon" !
+          dark = 'wave', -- try "dragon" !
           light = 'lotus',
         },
       }
@@ -1174,7 +1179,87 @@ require('lazy').setup({
       vim.cmd 'colorscheme kanagawa'
     end,
   },
-
+  -- {
+  --   'thesimonho/kanagawa-paper.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   config = function()
+  --     require('kanagawa-paper').setup {
+  --       -- enable undercurls for underlined text
+  --       undercurl = true,
+  --       -- transparent background
+  --       transparent = false,
+  --       -- highlight background for the left gutter
+  --       gutter = false,
+  --       -- background for diagnostic virtual text
+  --       diag_background = true,
+  --       -- dim inactive windows. Disabled when transparent
+  --       dim_inactive = false,
+  --       -- set colors for terminal buffers
+  --       terminal_colors = true,
+  --       -- cache highlights and colors for faster startup.
+  --       -- see Cache section for more details.
+  --       cache = false,
+  --
+  --       styles = {
+  --         -- style for comments
+  --         comment = { italic = true },
+  --         -- style for functions
+  --         functions = { italic = false },
+  --         -- style for keywords
+  --         keyword = { italic = false, bold = true },
+  --         -- style for statements
+  --         statement = { italic = true, bold = false },
+  --         -- style for types
+  --         type = { italic = false },
+  --       },
+  --       -- override default palette and theme colors
+  --       colors = {
+  --         palette = {},
+  --         theme = {
+  --           ink = {},
+  --           canvas = {},
+  --         },
+  --       },
+  --       -- adjust overall color balance for each theme [-1, 1]
+  --       color_offset = {
+  --         ink = { brightness = 0, saturation = 1 },
+  --         canvas = { brightness = 0, saturation = 0 },
+  --       },
+  --       -- override highlight groups
+  --       overrides = function(colors)
+  --         return {}
+  --       end,
+  --
+  --       -- uses lazy.nvim, if installed, to automatically enable needed plugins
+  --       auto_plugins = true,
+  --       -- enable highlights for all plugins (disabled if using lazy.nvim)
+  --       all_plugins = package.loaded.lazy == nil,
+  --       -- manually enable/disable individual plugins.
+  --       -- check the `groups/plugins` directory for the exact names
+  --       plugins = {
+  --         -- examples:
+  --         -- rainbow_delimiters = true
+  --         -- which_key = false
+  --       },
+  --
+  --       -- enable integrations with other applications
+  --       integrations = {
+  --         -- automatically set wezterm theme to match the current neovim theme
+  --         wezterm = {
+  --           enabled = true,
+  --           -- neovim will write the theme name to this file
+  --           -- wezterm will read from this file to know which theme to use
+  --           path = (os.getenv 'TEMP' or '/tmp') .. '/nvim-theme',
+  --         },
+  --       },
+  --     }
+  --
+  --     -- setup must be called before loading
+  --     vim.cmd 'colorscheme kanagawa-paper'
+  --   end,
+  -- },
   -- { -- You can easily change to a different colorscheme.
   --   -- Change the name of the colorscheme plugin below, and then
   --   -- change the command in the config to whatever the name of that colorscheme is.
@@ -1197,7 +1282,7 @@ require('lazy').setup({
   --         functions = {},
   --         variables = {},
   --         -- Background styles. Can be "dark", "transparent" or "normal"
-  --         sidebars = 'transparent', -- style for sidebars, see below
+  --         sidebars = 'dark', -- style for sidebars, see below
   --         floats = 'dark', -- style for floating windows
   --       },
   --       sidebars = { 'qf', 'help' }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`

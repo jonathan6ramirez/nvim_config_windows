@@ -149,6 +149,8 @@ return {
         end
         return '\u{f085} ' .. table.concat(c, '|')
       end
+      -- local kanagawa_paper = require 'lualine.themes.kanagawa-paper-ink'
+      -- NOTE: if you want to change the color back on lualine change the theme
 
       require('lualine').setup {
         options = {
@@ -249,5 +251,9 @@ return {
         },
       }
     end,
+  },
+  {
+    'MTDL9/vim-log-highlighting',
+    opts = {},
   },
 }
