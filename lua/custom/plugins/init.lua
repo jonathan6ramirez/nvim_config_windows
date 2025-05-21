@@ -252,8 +252,8 @@ return {
       }
     end,
   },
-  {
-    'MTDL9/vim-log-highlighting',
-    opts = {},
-  },
+  -- {
+  --   'MTDL9/vim-log-highlighting',
+  --   opts = {},
+  -- },
 }
