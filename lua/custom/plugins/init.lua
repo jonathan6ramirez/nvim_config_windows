@@ -83,23 +83,42 @@ return {
       --   lightgray = '#504945',
       --   inactivegray = '#7c6f64',
       -- }
+      -- local colors = {
+      --   background = '#414a4c',
+      --   background_transparent = '#1f1f28', -- fallback since lualine doesn't support rgba
+      --   foreground = '#dcd7ba',
+      --   cursor = '#c8c093',
+      --   selection_bg = '#2d4f67',
+      --   scrollbar_thumb = '#16161d',
+      --   split = '#232b2b',
+      --   red = '#c34043',
+      --   green = '#76946a',
+      --   yellow = '#c0a36e',
+      --   blue = '#7e9cd8',
+      --   magenta = '#957fb8',
+      --   cyan = '#6a9589',
+      --   white = '#c8c093',
+      --   bright_white = '#dcd7ba',
+      --   gray = '#727169',
+      -- }
+
       local colors = {
-        background = '#414a4c',
-        background_transparent = '#1f1f28', -- fallback since lualine doesn't support rgba
-        foreground = '#dcd7ba',
-        cursor = '#c8c093',
-        selection_bg = '#2d4f67',
-        scrollbar_thumb = '#16161d',
-        split = '#232b2b',
-        red = '#c34043',
-        green = '#76946a',
-        yellow = '#c0a36e',
-        blue = '#7e9cd8',
-        magenta = '#957fb8',
-        cyan = '#6a9589',
-        white = '#c8c093',
-        bright_white = '#dcd7ba',
-        gray = '#727169',
+        background = '#16181a', -- fallback for transparent
+        foreground = '#fdf6e3', -- base3
+        cursor = '#fdf6e3',
+        selection_bg = '#586e75', -- base01
+        scrollbar_thumb = '#002b36', -- base03
+        split = '#002b36',
+
+        red = '#dc322f',
+        green = '#859900',
+        yellow = '#b58900',
+        blue = '#268bd2',
+        magenta = '#d33682',
+        cyan = '#2aa198',
+        white = '#eee8d5',
+        gray = '#073642',
+        bright_white = '#fdf6e3',
       }
 
       local bubbles_theme = {
