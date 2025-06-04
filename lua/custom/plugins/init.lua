@@ -102,40 +102,82 @@ return {
       --   gray = '#727169',
       -- }
 
-      local colors = {
-        background = '#16181a', -- fallback for transparent
-        foreground = '#fdf6e3', -- base3
-        cursor = '#fdf6e3',
-        selection_bg = '#586e75', -- base01
-        scrollbar_thumb = '#002b36', -- base03
-        split = '#002b36',
+      -- local colors = {
+      --   background = '#16181a', -- fallback for transparent
+      --   foreground = '#fdf6e3', -- base3
+      --   cursor = '#fdf6e3',
+      --   selection_bg = '#586e75', -- base01
+      --   scrollbar_thumb = '#002b36', -- base03
+      --   split = '#002b36',
+      --
+      --   red = '#dc322f',
+      --   green = '#859900',
+      --   yellow = '#b58900',
+      --   blue = '#268bd2',
+      --   magenta = '#d33682',
+      --   cyan = '#2aa198',
+      --   white = '#eee8d5',
+      --   gray = '#073642',
+      --   bright_white = '#fdf6e3',
+      -- }
 
-        red = '#dc322f',
-        green = '#859900',
-        yellow = '#b58900',
-        blue = '#268bd2',
-        magenta = '#d33682',
-        cyan = '#2aa198',
-        white = '#eee8d5',
-        gray = '#073642',
-        bright_white = '#fdf6e3',
+      local colors = {
+        background = '#222436',
+        foreground = '#c8d3f5',
+        cursor = '#c8d3f5',
+        split = '#82aaff',
+        selection = '#2d3f76',
+        red = '#ff757f',
+        green = '#c3e88d',
+        yellow = '#ffc777',
+        blue = '#82aaff',
+        magenta = '#c099ff',
+        cyan = '#86e1fc',
+        white = '#c8d3f5',
+        gray = '#545c7e',
+        darkgray = '#1b1d2b',
       }
 
-      local bubbles_theme = {
+      -- local bubbles_theme = {
+      --   normal = {
+      --     a = { fg = colors.split, bg = colors.blue, gui = 'bold' },
+      --     b = { fg = colors.foreground, bg = colors.split },
+      --     c = { fg = colors.foreground, bg = colors.split },
+      --   },
+      --
+      --   insert = { a = { fg = colors.split, bg = colors.green, gui = 'bold' } },
+      --   visual = { a = { fg = colors.split, bg = colors.yellow, gui = 'bold' } },
+      --   replace = { a = { fg = colors.split, bg = colors.red, gui = 'bold' } },
+      --   command = { a = { fg = colors.split, bg = colors.magenta, gui = 'bold' } },
+      --
+      --   inactive = {
+      --     a = { fg = colors.gray, bg = colors.background, gui = 'bold' },
+      --     b = { fg = colors.gray, bg = colors.split },
+      --     c = { fg = colors.gray, bg = colors.background },
+      --   },
+      -- }
+
+      local tokyo_moon_theme = {
         normal = {
-          a = { fg = colors.split, bg = colors.blue, gui = 'bold' },
-          b = { fg = colors.foreground, bg = colors.split },
-          c = { fg = colors.foreground, bg = colors.split },
+          a = { fg = colors.background, bg = colors.blue, gui = 'bold' },
+          b = { fg = colors.foreground, bg = colors.darkgray },
+          c = { fg = colors.foreground, bg = colors.background },
         },
-
-        insert = { a = { fg = colors.split, bg = colors.green, gui = 'bold' } },
-        visual = { a = { fg = colors.split, bg = colors.yellow, gui = 'bold' } },
-        replace = { a = { fg = colors.split, bg = colors.red, gui = 'bold' } },
-        command = { a = { fg = colors.split, bg = colors.magenta, gui = 'bold' } },
-
+        insert = {
+          a = { fg = colors.background, bg = colors.green, gui = 'bold' },
+        },
+        visual = {
+          a = { fg = colors.background, bg = colors.yellow, gui = 'bold' },
+        },
+        replace = {
+          a = { fg = colors.background, bg = colors.red, gui = 'bold' },
+        },
+        command = {
+          a = { fg = colors.background, bg = colors.magenta, gui = 'bold' },
+        },
         inactive = {
           a = { fg = colors.gray, bg = colors.background, gui = 'bold' },
-          b = { fg = colors.gray, bg = colors.split },
+          b = { fg = colors.gray, bg = colors.darkgray },
           c = { fg = colors.gray, bg = colors.background },
         },
       }
@@ -174,7 +216,7 @@ return {
       require('lualine').setup {
         options = {
           icons_enabled = true,
-          theme = bubbles_theme,
+          theme = tokyo_moon_theme,
           -- component_separators = { left = '', right = '' },
           -- section_separators = { left = '', right = '' },
           -- component_separators = { left = '', right = '' },

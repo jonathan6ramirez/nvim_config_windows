@@ -1207,69 +1207,79 @@ require('lazy').setup({
   --     vim.cmd 'colorscheme kanagawa'
   --   end,
   -- },
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {},
-  --   config = function()
-  --     require('tokyonight').setup {
-  --       style = 'moon', -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
-  --       light_style = 'day', -- The theme is used when the background is set to light
-  --       transparent = true, -- Enable this to disable setting the background color
-  --       terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
-  --       styles = {
-  --         -- Style to be applied to different syntax groups
-  --         -- Value is any valid attr-list value for `:help nvim_set_hl`
-  --         comments = { italic = true },
-  --         keywords = { italic = true },
-  --         functions = {},
-  --         variables = { bold = true },
-  --         -- Background styles. Can be "dark", "transparent" or "normal"
-  --         sidebars = 'dark', -- style for sidebars, see below
-  --         floats = 'dark', -- style for floating windows
-  --       },
-  --       day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-  --       dim_inactive = false, -- dims inactive windows
-  --       lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
-  --
-  --       --- You can override specific color groups to use other groups or a hex color
-  --       --- function will be called with a ColorScheme table
-  --       ---@param colors ColorScheme
-  --       on_colors = function(colors) end,
-  --
-  --       --- You can override specific highlights to use other groups or a hex color
-  --       --- function will be called with a Highlights and ColorScheme table
-  --       ---@param highlights tokyonight.Highlights
-  --       ---@param colors ColorScheme
-  --       on_highlights = function(highlights, colors)
-  --         -- INFO: This sets the types to BOLD
-  --         local type_hl = highlights.Type or {}
-  --         type_hl.bold = true
-  --         highlights.Type = type_hl
-  --       end,
-  --
-  --       cache = true, -- When set to true, the theme will be cached for better performance
-  --
-  --       ---@type table<string, boolean|{enabled:boolean}>
-  --       plugins = {
-  --         -- enable all plugins when not using lazy.nvim
-  --         -- set to false to manually enable/disable plugins
-  --         all = package.loaded.lazy == nil,
-  --         -- uses your plugin manager to automatically enable needed plugins
-  --         -- currently only lazy.nvim is supported
-  --         auto = true,
-  --         -- add any plugins here that you want to enable
-  --         -- for all possible plugins, see:
-  --         --   * https://github.com/folke/tokyonight.nvim/tree/main/lua/tokyonight/groups
-  --         -- telescope = true,
-  --       },
-  --     }
-  --
-  --     -- setup must be called before loading
-  --     vim.cmd 'colorscheme tokyonight'
-  --   end,
-  -- },
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      require('tokyonight').setup {
+        style = 'moon', -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
+        light_style = 'moon', -- The theme is used when the background is set to light
+        transparent = true, -- Enable this to disable setting the background color
+        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = true },
+          keywords = { italic = true },
+          functions = {},
+          variables = { bold = true },
+          -- Background styles. Can be "dark", "transparent" or "normal"
+          sidebars = 'dark', -- style for sidebars, see below
+          floats = 'dark', -- style for floating windows
+        },
+        day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+        dim_inactive = false, -- dims inactive windows
+        lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+
+        --- You can override specific color groups to use other groups or a hex color
+        --- function will be called with a ColorScheme table
+        ---@param colors ColorScheme
+        on_colors = function(colors) end,
+
+        --- You can override specific highlights to use other groups or a hex color
+        --- function will be called with a Highlights and ColorScheme table
+        ---@param highlights tokyonight.Highlights
+        ---@param colors ColorScheme
+        on_highlights = function(highlights, colors)
+          -- Safely extend `Type` and `Keyword` base groups
+          highlights.Type = vim.tbl_extend('force', highlights.Type or {}, { bold = true })
+          highlights.Keyword = vim.tbl_extend('force', highlights.Keyword or {}, { italic = true })
+
+          -- Specific Treesitter keyword groups with hardcoded color
+          local keyword_groups = {
+            '@keyword.function',
+            '@keyword.conditional',
+            '@keyword.repeat',
+          }
+
+          for _, group in ipairs(keyword_groups) do
+            highlights[group] = { italic = true, fg = '#c099ff' }
+          end
+        end,
+
+        cache = true, -- When set to true, the theme will be cached for better performance
+
+        ---@type table<string, boolean|{enabled:boolean}>
+        plugins = {
+          -- enable all plugins when not using lazy.nvim
+          -- set to false to manually enable/disable plugins
+          all = package.loaded.lazy == nil,
+          -- uses your plugin manager to automatically enable needed plugins
+          -- currently only lazy.nvim is supported
+          auto = true,
+          -- add any plugins here that you want to enable
+          -- for all possible plugins, see:
+          --   * https://github.com/folke/tokyonight.nvim/tree/main/lua/tokyonight/groups
+          -- telescope = true,
+        },
+      }
+
+      -- setup must be called before loading
+      vim.cmd 'colorscheme tokyonight'
+    end,
+  },
 
   -- {
   --   'thesimonho/kanagawa-paper.nvim',
@@ -1352,68 +1362,68 @@ require('lazy').setup({
   --     vim.cmd 'colorscheme kanagawa-paper'
   --   end,
   -- },
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'craftzdog/solarized-osaka.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    lazy = false,
-    config = function()
-      require('solarized-osaka').setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        transparent = true, -- Enable this to disable setting the background color
-        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
-        styles = {
-          -- Style to be applied to different syntax groups
-          -- Value is any valid attr-list value for `:help nvim_set_hl`
-          comments = { italic = true },
-          keywords = { italic = true },
-          -- functions = { bold = true },
-          variables = {},
-
-          -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = 'transparent', -- style for sidebars, see below
-          floats = 'transparent', -- style for floating windows
-        },
-        sidebars = { 'qf', 'help' }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
-        day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-        hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
-        dim_inactive = false, -- dims inactive windows
-        lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
-
-        --- You can override specific color groups to use other groups or a hex color
-        --- function will be called with a ColorScheme table
-        ---@param colors ColorScheme
-        on_colors = function(colors) end,
-
-        --- You can override specific highlights to use other groups or a hex color
-        --- function will be called with a Highlights and ColorScheme table
-        ---@param highlights Highlights
-        ---@param colors ColorScheme
-        on_highlights = function(highlights, colors)
-          -- Safely extend `Type` and `Keyword` base groups
-          highlights.Type = vim.tbl_extend('force', highlights.Type or {}, { bold = true })
-          highlights.Keyword = vim.tbl_extend('force', highlights.Keyword or {}, { italic = true })
-
-          -- Specific Treesitter keyword groups with hardcoded color
-          local keyword_groups = {
-            '@keyword.function',
-            '@keyword.conditional',
-            '@keyword.repeat',
-          }
-
-          for _, group in ipairs(keyword_groups) do
-            highlights[group] = { italic = true, fg = '#849900' }
-          end
-        end,
-      }
-
-      vim.cmd.colorscheme 'solarized-osaka'
-    end,
-  },
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'craftzdog/solarized-osaka.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   lazy = false,
+  --   config = function()
+  --     require('solarized-osaka').setup {
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       transparent = true, -- Enable this to disable setting the background color
+  --       terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+  --       styles = {
+  --         -- Style to be applied to different syntax groups
+  --         -- Value is any valid attr-list value for `:help nvim_set_hl`
+  --         comments = { italic = true },
+  --         keywords = { italic = true },
+  --         -- functions = { bold = true },
+  --         variables = {},
+  --
+  --         -- Background styles. Can be "dark", "transparent" or "normal"
+  --         sidebars = 'transparent', -- style for sidebars, see below
+  --         floats = 'transparent', -- style for floating windows
+  --       },
+  --       sidebars = { 'qf', 'help' }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+  --       day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+  --       hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+  --       dim_inactive = false, -- dims inactive windows
+  --       lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+  --
+  --       --- You can override specific color groups to use other groups or a hex color
+  --       --- function will be called with a ColorScheme table
+  --       ---@param colors ColorScheme
+  --       on_colors = function(colors) end,
+  --
+  --       --- You can override specific highlights to use other groups or a hex color
+  --       --- function will be called with a Highlights and ColorScheme table
+  --       ---@param highlights Highlights
+  --       ---@param colors ColorScheme
+  --       on_highlights = function(highlights, colors)
+  --         -- Safely extend `Type` and `Keyword` base groups
+  --         highlights.Type = vim.tbl_extend('force', highlights.Type or {}, { bold = true })
+  --         highlights.Keyword = vim.tbl_extend('force', highlights.Keyword or {}, { italic = true })
+  --
+  --         -- Specific Treesitter keyword groups with hardcoded color
+  --         local keyword_groups = {
+  --           '@keyword.function',
+  --           '@keyword.conditional',
+  --           '@keyword.repeat',
+  --         }
+  --
+  --         for _, group in ipairs(keyword_groups) do
+  --           highlights[group] = { italic = true, fg = '#849900' }
+  --         end
+  --       end,
+  --     }
+  --
+  --     vim.cmd.colorscheme 'solarized-osaka'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   {
