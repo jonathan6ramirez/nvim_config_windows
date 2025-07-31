@@ -2,6 +2,7 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+require('custom.winbar').setup()
 return {
 
   {
@@ -59,7 +60,14 @@ return {
         table.insert(keys, {
           '<leader>' .. i,
           function()
-            require('harpoon'):list():select(i)
+            local harpoon = require 'harpoon'
+            local list = harpoon:list()
+            if list then
+              list:select(i)
+            else
+              vim.notify('Harpoon list is not intiailized yet', vim.log.levels.WARN)
+              -- require('harpoon'):list():select(i)
+            end
           end,
           desc = 'Harpoon to File ' .. i,
         })
@@ -71,56 +79,6 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      -- local colors = {
-      --   black = '#282828',
-      --   white = '#ebdbb2',
-      --   red = '#fb4934',
-      --   green = '#b8bb26',
-      --   blue = '#83a598',
-      --   yellow = '#fe8019',
-      --   gray = '#a89984',
-      --   darkgray = '#3c3836',
-      --   lightgray = '#504945',
-      --   inactivegray = '#7c6f64',
-      -- }
-      -- local colors = {
-      --   background = '#414a4c',
-      --   background_transparent = '#1f1f28', -- fallback since lualine doesn't support rgba
-      --   foreground = '#dcd7ba',
-      --   cursor = '#c8c093',
-      --   selection_bg = '#2d4f67',
-      --   scrollbar_thumb = '#16161d',
-      --   split = '#232b2b',
-      --   red = '#c34043',
-      --   green = '#76946a',
-      --   yellow = '#c0a36e',
-      --   blue = '#7e9cd8',
-      --   magenta = '#957fb8',
-      --   cyan = '#6a9589',
-      --   white = '#c8c093',
-      --   bright_white = '#dcd7ba',
-      --   gray = '#727169',
-      -- }
-
-      -- local colors = {
-      --   background = '#16181a', -- fallback for transparent
-      --   foreground = '#fdf6e3', -- base3
-      --   cursor = '#fdf6e3',
-      --   selection_bg = '#586e75', -- base01
-      --   scrollbar_thumb = '#002b36', -- base03
-      --   split = '#002b36',
-      --
-      --   red = '#dc322f',
-      --   green = '#859900',
-      --   yellow = '#b58900',
-      --   blue = '#268bd2',
-      --   magenta = '#d33682',
-      --   cyan = '#2aa198',
-      --   white = '#eee8d5',
-      --   gray = '#073642',
-      --   bright_white = '#fdf6e3',
-      -- }
-
       local colors = {
         background = '#222436',
         foreground = '#c8d3f5',
@@ -137,25 +95,6 @@ return {
         gray = '#545c7e',
         darkgray = '#1b1d2b',
       }
-
-      -- local bubbles_theme = {
-      --   normal = {
-      --     a = { fg = colors.split, bg = colors.blue, gui = 'bold' },
-      --     b = { fg = colors.foreground, bg = colors.split },
-      --     c = { fg = colors.foreground, bg = colors.split },
-      --   },
-      --
-      --   insert = { a = { fg = colors.split, bg = colors.green, gui = 'bold' } },
-      --   visual = { a = { fg = colors.split, bg = colors.yellow, gui = 'bold' } },
-      --   replace = { a = { fg = colors.split, bg = colors.red, gui = 'bold' } },
-      --   command = { a = { fg = colors.split, bg = colors.magenta, gui = 'bold' } },
-      --
-      --   inactive = {
-      --     a = { fg = colors.gray, bg = colors.background, gui = 'bold' },
-      --     b = { fg = colors.gray, bg = colors.split },
-      --     c = { fg = colors.gray, bg = colors.background },
-      --   },
-      -- }
 
       local tokyo_moon_theme = {
         normal = {
@@ -182,34 +121,37 @@ return {
         },
       }
 
-      -- local function lsp_progress()
-      --   local messages = vim.lsp.util.get_progress_messages()
-      --   if #messages == 0 then
-      --     return
-      --   end
-      --   local status = {}
-      --   for _, msg in pairs(messages) do
-      --     table.insert(status, (msg.percentage or 0) .. '%% ' .. (msg.title or ''))
-      --   end
-      --   local spinners = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
-      --   local ms = vim.loop.hrtime() / 1000000
-      --   local frame = math.floor(ms / 120) % #spinners
-      --   return table.concat(status, ' | ') .. ' ' .. spinners[frame + 1]
-      -- end
-      local clients_lsp = function()
-        local bufnr = vim.api.nvim_get_current_buf()
+      local bubbles_theme = {
+        normal = {
+          a = { fg = '#7e9cd8', bg = 'NONE', gui = 'bold' },
+          b = { fg = '#c8c093', bg = 'NONE' },
+          c = { fg = '#dcd7ba', bg = 'NONE' },
+        },
 
-        local clients = vim.lsp.buf_get_clients(bufnr)
-        if next(clients) == nil then
-          return ''
-        end
+        insert = {
+          a = { fg = '#76946a', bg = 'NONE', gui = 'bold' },
+        },
 
-        local c = {}
-        for _, client in pairs(clients) do
-          table.insert(c, client.name)
-        end
-        return '\u{f085} ' .. table.concat(c, '|')
-      end
+        visual = {
+          a = { fg = '#c0a36e', bg = 'NONE', gui = 'bold' },
+        },
+
+        replace = {
+          a = { fg = '#c34043', bg = 'NONE', gui = 'bold' },
+        },
+
+        command = {
+          a = { fg = '#957fb8', bg = 'NONE', gui = 'bold' },
+          b = { fg = '#c8c093', bg = 'NONE' },
+          c = { fg = '#dcd7ba', bg = 'NONE' },
+        },
+
+        inactive = {
+          a = { fg = '#727169', bg = 'NONE', gui = 'bold' },
+          b = { fg = '#c8c093', bg = 'NONE' },
+          c = { fg = '#727169', bg = 'NONE' },
+        },
+      }
       -- local kanagawa_paper = require 'lualine.themes.kanagawa-paper-ink'
       -- NOTE: if you want to change the color back on lualine change the theme
 
@@ -217,12 +159,12 @@ return {
         options = {
           icons_enabled = true,
           theme = tokyo_moon_theme,
-          -- component_separators = { left = '', right = '' },
-          -- section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
           -- component_separators = { left = '', right = '' },
           -- section_separators = { left = '', right = '' },
-          component_separators = '|',
-          section_separators = { left = '', right = '' },
+          -- component_separators = '|',
+          -- section_separators = { left = '', right = '' },
           disabled_filetypes = {
             statusline = {},
             winbar = {},
@@ -252,8 +194,8 @@ return {
             },
           },
           lualine_y = {
-            clients_lsp,
-            'filetype',
+            -- clients_lsp,
+            -- 'filetype',
             'progress',
           },
           lualine_z = { { 'datetime', style = '%a, %b %d %I:%M%p' }, { 'location', separator = { right = '' }, left_padding = 0 } },
@@ -317,4 +259,5 @@ return {
   --   'MTDL9/vim-log-highlighting',
   --   opts = {},
   -- },
+  --
 }
