@@ -183,7 +183,7 @@ return {
         sections = {
           lualine_a = { { 'mode', separator = { left = '', right = '' }, right_padding = 2 } },
           -- lualine_a = { 'mode' },
-          lualine_b = { 'branch', { 'filename', path = 1 }, 'diagnostics' },
+          lualine_b = { 'branch', { 'filename', path = 1 } },
           lualine_c = {},
           lualine_x = {
             {
@@ -196,6 +196,7 @@ return {
           lualine_y = {
             -- clients_lsp,
             -- 'filetype',
+            'diagnostics',
             'progress',
           },
           lualine_z = { { 'datetime', style = '%a, %b %d %I:%M%p' }, { 'location', separator = { right = '' }, left_padding = 0 } },
