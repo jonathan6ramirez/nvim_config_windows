@@ -117,41 +117,13 @@ return {
         inactive = {
           a = { fg = colors.gray, bg = colors.background, gui = 'bold' },
           b = { fg = colors.gray, bg = colors.darkgray },
-          c = { fg = colors.gray, bg = colors.background },
+          c = { fg = colors.gray },
         },
       }
 
-      local bubbles_theme = {
-        normal = {
-          a = { fg = '#7e9cd8', bg = 'NONE', gui = 'bold' },
-          b = { fg = '#c8c093', bg = 'NONE' },
-          c = { fg = '#dcd7ba', bg = 'NONE' },
-        },
+      local auto_theme_custom = require 'lualine.themes.seoul256'
+      -- auto_theme_custom.normal.c.bg = 'NONE'
 
-        insert = {
-          a = { fg = '#76946a', bg = 'NONE', gui = 'bold' },
-        },
-
-        visual = {
-          a = { fg = '#c0a36e', bg = 'NONE', gui = 'bold' },
-        },
-
-        replace = {
-          a = { fg = '#c34043', bg = 'NONE', gui = 'bold' },
-        },
-
-        command = {
-          a = { fg = '#957fb8', bg = 'NONE', gui = 'bold' },
-          b = { fg = '#c8c093', bg = 'NONE' },
-          c = { fg = '#dcd7ba', bg = 'NONE' },
-        },
-
-        inactive = {
-          a = { fg = '#727169', bg = 'NONE', gui = 'bold' },
-          b = { fg = '#c8c093', bg = 'NONE' },
-          c = { fg = '#727169', bg = 'NONE' },
-        },
-      }
       -- local kanagawa_paper = require 'lualine.themes.kanagawa-paper-ink'
       -- NOTE: if you want to change the color back on lualine change the theme
 
@@ -159,6 +131,7 @@ return {
         options = {
           icons_enabled = true,
           theme = tokyo_moon_theme,
+          -- theme = auto_theme_custom,
           component_separators = { left = '', right = '' },
           section_separators = { left = '', right = '' },
           -- component_separators = { left = '', right = '' },

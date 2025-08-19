@@ -87,7 +87,9 @@ M.update_winbar = function()
   local lsp = M.get_lsp_names()
   local ft = M.get_filetype()
 
-  if not lsp then
+  -- There is no lsp active but there if a filetype.
+  -- In many cases this means that its a plugin window
+  if lsp == '' then
     vim.wo.winbar = '%=%#WinbarBlock#' .. ft .. ' ' .. '%#WinbarBlock#'
     return
   end
