@@ -97,9 +97,16 @@ vim.g.loaded_netrwPlugin = 1
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- Setting the default terminal shell to powershell
-vim.g.terminal_emulator = 'pwsh.exe'
-vim.opt.shell = 'pwsh.exe'
+-- Setting the default terminal shell to powershell or zsh for mac
+-- vim.g.terminal_emulator = 'pwsh.exe'
+-- vim.opt.shell = 'pwsh.exe'
+if vim.loop.os_uname().sysname == 'Windows_NT' then
+  vim.g.terminal_emulator = 'pwsh.exe'
+  vim.opt.shell = 'pwsh.exe'
+else
+  vim.g.terminal_emulator = 'zsh'
+  vim.opt.shell = 'zsh'
+end
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
