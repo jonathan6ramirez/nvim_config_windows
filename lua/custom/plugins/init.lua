@@ -3,6 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 require('custom.winbar').setup()
+require('custom.floaterminal').setup()
 return {
 
   {

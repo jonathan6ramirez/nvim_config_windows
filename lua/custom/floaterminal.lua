@@ -1,3 +1,4 @@
+local M = {}
 -- print 'floaterminal loaded'
 -- This saves our state
 local state = {
@@ -65,3 +66,9 @@ vim.api.nvim_create_user_command('Floaterminal', toggle_terminal, {})
 --   config = function()
 --   end,
 -- }
+
+M.setup = function()
+  vim.api.nvim_create_user_command('Floaterminal', toggle_terminal, {})
+end
+
+return M
