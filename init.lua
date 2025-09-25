@@ -313,16 +313,8 @@ end, {})
 --
 -- This is the global variables for dadbodui
 vim.g.dbs = {
-  -- { name = 'dev', url = 'sqlcmd://localhost\\SQLEXPRESS/AdventureWorks16?trusted_connection=true' },
-  { name = 'dev', url = 'sqlserver://localhost\\SQLEXPRESS/AdventureWorks16?trusted_connection=true' },
-  -- { name = 'TMSE_PROD', url = 'sqlserver://localhost\\SQLEXPRESS/AdventureWorks16?trusted_connection=true' },
-  -- { name = 'wp', url = 'mysql://root@localhost/wp_awesome' },
-  -- {
-  --   name = 'production',
-  --   url = function()
-  --     return vim.fn.system 'get-prod-url'
-  --   end,
-  -- },
+  -- { name = 'dev', url = 'sqlserver://localhost\\SQLEXPRESS/AdventureWorks16?trusted_connection=true' },
+  { name = 'TmsEPrd', url = 'sqlserver://jzntc-sql.ntcc.edu:1433/TmsEPrd?trusted_connection=yes&driver=ODBC+Driver+18+for+SQL+Server' },
 }
 
 -- Set custom background color for Fidget.nvim
